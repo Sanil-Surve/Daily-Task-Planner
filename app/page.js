@@ -36,6 +36,19 @@ export default function Home() {
 
     settodos({ title: " ", description: " " });
   };
+
+  const getHelp = async (todo) => {
+    let res = await fetch("/api/openai", {
+      body: JSON.stringify({ todo: todo }),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    let response = await res.json();
+    console.log(response);
+  };
   return (
     <div>
       {" "}
@@ -63,7 +76,7 @@ export default function Home() {
         </div>
       </header>
       <section className="text-gray-600 body-font relative">
-        <div className="container px-5 py-24 mx-auto">
+        <div className="container px-5 py-12 mx-auto">
           <div className="flex flex-col text-center w-full mb-12">
             <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
               Add a Todo
@@ -125,14 +138,15 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-
-      <div className="container px-5 py-25 mx-auto">
+      <div className="container px-5 py-12 mx-auto">
         <section>
-          <h1 className="text-2xl font-bold my-5 bg-dark">Your Todo List</h1>
+          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
+            Your Todo List
+          </h1>
           {currentTodos.map((item) => {
             return (
-                <table className="table-fixed border-collapse border border-slate-500">
+              <div>
+                <table className="table-fixed border-collapse border border-slate-500 w-full bg-yellow-500">
                   <thead>
                     <tr>
                       <th className="border border-slate-600">Title</th>
@@ -146,8 +160,18 @@ export default function Home() {
                     </tr>
                   </tbody>
                 </table>
+                <button onClick={()=>getHelp([item[0]])} className="flex flex-end mx-auto text-white bg-indigo-500 hover:bg-indigo-600 py-2 rounded">Get AI Help</button>
+              </div>
             );
           })}
+        </section>
+      </div>
+      <div className="container px-5 py-12 mx-auto">
+        <section>
+          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
+            Help From OpenAI
+          </h1>
+          <p>This is Task related help...</p>
         </section>
       </div>
     </div>
