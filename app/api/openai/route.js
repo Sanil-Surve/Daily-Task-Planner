@@ -20,6 +20,6 @@ async function main(todo) {
 export async function POST(req) {
   const data = await req.json();
   console.log(data);
-  let choices = main(data.todo);
-  return NextResponse.json({ choices });
+  let choices = await main(data.todo);
+  return NextResponse.json({ "text": choices[0].message.content });
 }

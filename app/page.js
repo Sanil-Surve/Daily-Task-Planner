@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [todos, settodos] = useState({ title: " ", description: " " });
   const [currentTodos, setCurrentTodos] = useState([]);
+  const [help, sethelp] = useState("Help From OpenAI will appear here");
 
   useEffect(() => {
     const getData = async () => {
@@ -15,14 +16,14 @@ export default function Home() {
     };
     getData();
   }, []);
-
+  
   const handleChange = (e) => {
     settodos({ ...todos, [e.target.name]: e.target.value });
   };
-
+  
   const handleSubmit = async () => {
     console.log(todos);
-
+    
     let res = await fetch("/api", {
       method: "POST",
       headers: {
@@ -30,14 +31,15 @@ export default function Home() {
       },
       body: JSON.stringify(todos),
     });
-
+    
     let response = await res.json();
     console.log(response);
-
+    
     settodos({ title: " ", description: " " });
   };
-
+  
   const getHelp = async (todo) => {
+    sethelp("Loading...");
     let res = await fetch("/api/openai", {
       body: JSON.stringify({ todo: todo }),
       method: "POST",
@@ -48,11 +50,12 @@ export default function Home() {
 
     let response = await res.json();
     console.log(response);
+    sethelp(response.text);
   };
   return (
-    <div>
+    <div className="bg-purple-600">
       {" "}
-      <header className="text-gray-600 body-font">
+      <header className="text-gray-600 body-font bg-black-500">
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
           <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
             <svg
@@ -67,21 +70,21 @@ export default function Home() {
             >
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
             </svg>
-            <span className="ml-3 text-xl">Todo List</span>
+            <span className="ml-3 text-xl text-white">Todo List</span>
           </a>
           <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
-            <a className="mr-5 hover:text-gray-900">Home</a>
-            <a className="mr-5 hover:text-gray-900">About Us</a>
+            <a className="mr-5 hover:text-gray-900 text-white">Home</a>
+            <a className="mr-5 hover:text-gray-900 text-white">About Us</a>
           </nav>
         </div>
       </header>
       <section className="text-gray-600 body-font relative">
         <div className="container px-5 py-12 mx-auto">
           <div className="flex flex-col text-center w-full mb-12">
-            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
+            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 text-white">
               Add a Todo
             </h1>
-            <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
+            <p className="lg:w-2/3 mx-auto leading-relaxed text-base text-white">
               Helps you to Add a Todo
             </p>
           </div>
@@ -91,9 +94,9 @@ export default function Home() {
                 <div className="relative">
                   <label
                     htmlFor="title"
-                    className="leading-7 text-sm text-gray-600"
+                    className="leading-7 text-sm text-gray-600 text-white"
                   >
-                    Todo Name
+                    Task Name
                   </label>
                   <input
                     type="title"
@@ -111,7 +114,7 @@ export default function Home() {
                 <div className="relative">
                   <label
                     htmlFor="description"
-                    className="leading-7 text-sm text-gray-600"
+                    className="leading-7 text-sm text-gray-600 text-white"
                   >
                     Description
                   </label>
@@ -129,7 +132,7 @@ export default function Home() {
               <div className="p-2 w-full">
                 <button
                   onClick={handleSubmit}
-                  className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                  className="flex mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
                 >
                   Add Todo
                 </button>
@@ -140,7 +143,7 @@ export default function Home() {
       </section>
       <div className="container px-5 py-12 mx-auto">
         <section>
-          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
+          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 text-white">
             Your Todo List
           </h1>
           {currentTodos.map((item) => {
@@ -160,18 +163,17 @@ export default function Home() {
                     </tr>
                   </tbody>
                 </table>
-                <button onClick={()=>getHelp([item[0]])} className="flex flex-end mx-auto text-white bg-indigo-500 hover:bg-indigo-600 py-2 rounded">Get AI Help</button>
+                <button onClick={()=>getHelp([item[0]])} className="mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">Get AI Help</button>
               </div>
             );
           })}
         </section>
       </div>
-      <div className="container px-5 py-12 mx-auto">
+      <div className="container px-5 py-12 mx-auto bg-green-500">
         <section>
           <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
-            Help From OpenAI
+            <p>{help}</p>
           </h1>
-          <p>This is Task related help...</p>
         </section>
       </div>
     </div>
