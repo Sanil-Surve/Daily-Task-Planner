@@ -16,14 +16,12 @@ export default function Home() {
     };
     getData();
   }, []);
-  
+
   const handleChange = (e) => {
     settodos({ ...todos, [e.target.name]: e.target.value });
   };
-  
+
   const handleSubmit = async () => {
-    console.log(todos);
-    
     let res = await fetch("/api", {
       method: "POST",
       headers: {
@@ -31,13 +29,13 @@ export default function Home() {
       },
       body: JSON.stringify(todos),
     });
-    
+
     let response = await res.json();
     console.log(response);
-    
+
     settodos({ title: " ", description: " " });
   };
-  
+
   const getHelp = async (todo) => {
     sethelp("Loading...");
     let res = await fetch("/api/openai", {
@@ -70,7 +68,7 @@ export default function Home() {
             >
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
             </svg>
-            <span className="ml-3 text-xl text-white">Todo List</span>
+            <span className="ml-3 text-xl text-white">Task List</span>
           </a>
           <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
             <a className="mr-5 hover:text-gray-900 text-white">Home</a>
@@ -163,7 +161,12 @@ export default function Home() {
                     </tr>
                   </tbody>
                 </table>
-                <button onClick={()=>getHelp([item[0]])} className="mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">Get AI Help</button>
+                <button
+                  onClick={() => getHelp([item[0]])}
+                  className="mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
+                >
+                  AI Help
+                </button>
               </div>
             );
           })}
