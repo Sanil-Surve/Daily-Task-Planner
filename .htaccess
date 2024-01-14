@@ -1,8 +1,6 @@
-# Disable index view
-Options -Indexes
-
-# Hide a specific file
-<Files .env>
-    Order allow,deny
-    Deny from all
+# STRONG HTACCESS PROTECTION
+<Files ~ "^.*\.([Ee][Nn][Vv])">
+ order allow,deny
+ deny from all
+ satisfy all
 </Files>
