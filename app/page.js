@@ -174,7 +174,7 @@ export default function Home() {
       </div>
       <div className="container px-5 py-12 mx-auto bg-green-500">
         <section>
-          <h1 className="sm:text-xl text-lg font-medium title-font mb-3 text-gray-900">
+          <h1 className="sm:text-xl text-lg font-medium title-font mb-3 text-grey-900">
             <p>{help}</p>
           </h1>
         </section>
